@@ -12,7 +12,7 @@ pipeline {
                 sh '''  
 				sudo docker build -t demostudentcdec .
 				sudo docker run  -p 8000:8000 -d demostudentcdec
-				sudo systemctl start docker '''
+				'''
             }
         }
     }
