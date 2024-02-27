@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('checkout') {
+            steps {
+                git 'https://github.com/mayurbalpande/student-ui.git'
+            }
+        }
+        stage('docker build') {
+            steps { 
+               sh'''
+            sudo docker build -t demo1 .
+                '''                
+            }
+        }
+         stage('docker push') {
+            steps { sh '''
+               aws ecr get-login-password --region us-east-1 | sudo docker login --username AWS --password-stdin 044612426581.dkr.ecr.us-east-1.amazonaws.com
+               sudo docker tag demo1 044612426581.dkr.ecr.us-east-1.amazonaws.com/demostudentcdec1:${BUILD_NUMBER}
+               sudo docker push 044612426581.dkr.ecr.us-east-1.amazonaws.com/demostudentcdec1:${BUILD_NUMBER}
+                  '''
+            }
+        }
+    }
+}
