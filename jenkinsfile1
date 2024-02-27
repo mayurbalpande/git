@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('checkout') {
+            steps {
+               git branch: 'develop', url: 'https://github.com/mayurbalpande/django-todo-cicd.git'
+            }
+        }
+		stage('docker build') {
+            steps {
+                sh '''  
+				sudo docker build -t demostudentcdec .
+				sudo docker run  -p 8000:8000 -d demostudentcdec
+				sudo systemctl start docker '''
+            }
+        }
+    }
+}    
